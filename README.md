@@ -1,6 +1,6 @@
 # 🎮 Filmweb Clone (ASP.NET Core + PostgreSQL)
 
-Prosty klon Filmwebu zbudowany w ASP.NET Core Web API z wykorzystaniem Entity Framework Core i PostgreSQL jako bazy danych. Projekt sluży do nauki C#, EF Core oraz tworzenia REST API.
+Prosty aplikacja dotyczaca filmów i recenzji zbudowany w ASP.NET Core Web API z wykorzystaniem Entity Framework Core i PostgreSQL jako bazy danych. Projekt sluży do nauki C#, EF Core oraz tworzenia REST API.
 
 ---
 
