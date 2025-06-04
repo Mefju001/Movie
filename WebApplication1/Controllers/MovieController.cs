@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.DTO.Request;
 using WebApplication1.Models;
 using WebApplication1.Services.Impl;
 
@@ -27,7 +28,7 @@ namespace WebApplication1.Controllers
             return Ok(movie);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Movie movie)
+        public async Task<IActionResult> Create(MovieRequest movie)
         {
             var created = await _services.Add(movie);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);

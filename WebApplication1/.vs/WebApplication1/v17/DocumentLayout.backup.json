@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "D:\\Projekty\\Movie\\WebApplication1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\services\\movieservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:services\\movieservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\models\\genre.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -15,20 +15,36 @@
       "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:models\\movie.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\controllers\\moviecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:controllers\\moviecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\models\\director.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:models\\director.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\dto\\request\\genrerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:dto\\request\\genrerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\dto\\request\\directorrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:dto\\request\\directorrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\dto\\mapping\\moviemapping.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:dto\\mapping\\moviemapping.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\dto\\request\\movierequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:dto\\request\\movierequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|d:\\projekty\\movie\\webapplication1\\services\\imovieservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34EC641B-DAF3-4097-9B9E-28FD5DFB26A0}|WebApplication1.csproj|solutionrelative:services\\imovieservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,32 +54,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Genre.cs",
-              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\Models\\Genre.cs",
-              "RelativeDocumentMoniker": "Models\\Genre.cs",
-              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Models\\Genre.cs",
-              "RelativeToolTip": "Models\\Genre.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T18:36:11.643Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "Review.cs",
               "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\Models\\Review.cs",
               "RelativeDocumentMoniker": "Models\\Review.cs",
-              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Models\\Review.cs*",
-              "RelativeToolTip": "Models\\Review.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAoAAAAAAAAAA==",
+              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Models\\Review.cs",
+              "RelativeToolTip": "Models\\Review.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T18:36:06.77Z",
+              "WhenOpened": "2025-06-04T06:31:24.371Z",
               "EditorCaption": ""
             },
             {
@@ -74,59 +77,127 @@
               "RelativeDocumentMoniker": "Models\\Movie.cs",
               "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Models\\Movie.cs",
               "RelativeToolTip": "Models\\Movie.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T18:35:59.339Z",
+              "WhenOpened": "2025-06-04T06:22:34.112Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "WeatherForecastController.cs",
-              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\Controllers\\WeatherForecastController.cs",
-              "RelativeDocumentMoniker": "Controllers\\WeatherForecastController.cs",
-              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Controllers\\WeatherForecastController.cs",
-              "RelativeToolTip": "Controllers\\WeatherForecastController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T18:22:36.557Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "MovieController.cs",
-              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\Controllers\\MovieController.cs",
-              "RelativeDocumentMoniker": "Controllers\\MovieController.cs",
-              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Controllers\\MovieController.cs",
-              "RelativeToolTip": "Controllers\\MovieController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T18:14:28.409Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAgwB8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T18:07:06.128Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "Director.cs",
               "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\Models\\Director.cs",
               "RelativeDocumentMoniker": "Models\\Director.cs",
               "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Models\\Director.cs",
               "RelativeToolTip": "Models\\Director.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T18:36:15.331Z"
+              "WhenOpened": "2025-06-04T06:19:48.998Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MovieController.cs",
+              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\Controllers\\MovieController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MovieController.cs",
+              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Controllers\\MovieController.cs",
+              "RelativeToolTip": "Controllers\\MovieController.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAACAAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T06:18:03.354Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Genre.cs",
+              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\Models\\Genre.cs",
+              "RelativeDocumentMoniker": "Models\\Genre.cs",
+              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Models\\Genre.cs",
+              "RelativeToolTip": "Models\\Genre.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T06:14:14.753Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DirectorRequest.cs",
+              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\DTO\\Request\\DirectorRequest.cs",
+              "RelativeDocumentMoniker": "DTO\\Request\\DirectorRequest.cs",
+              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\DTO\\Request\\DirectorRequest.cs",
+              "RelativeToolTip": "DTO\\Request\\DirectorRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T06:05:02.88Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "GenreRequest.cs",
+              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\DTO\\Request\\GenreRequest.cs",
+              "RelativeDocumentMoniker": "DTO\\Request\\GenreRequest.cs",
+              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\DTO\\Request\\GenreRequest.cs",
+              "RelativeToolTip": "DTO\\Request\\GenreRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T06:04:47.077Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MovieServices.cs",
+              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\Services\\MovieServices.cs",
+              "RelativeDocumentMoniker": "Services\\MovieServices.cs",
+              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Services\\MovieServices.cs",
+              "RelativeToolTip": "Services\\MovieServices.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAAADoAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T06:00:31.61Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "IMovieServices.cs",
+              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\Services\\IMovieServices.cs",
+              "RelativeDocumentMoniker": "Services\\IMovieServices.cs",
+              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\Services\\IMovieServices.cs",
+              "RelativeToolTip": "Services\\IMovieServices.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T06:00:26.194Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MovieMapping.cs",
+              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\DTO\\Mapping\\MovieMapping.cs",
+              "RelativeDocumentMoniker": "DTO\\Mapping\\MovieMapping.cs",
+              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\DTO\\Mapping\\MovieMapping.cs",
+              "RelativeToolTip": "DTO\\Mapping\\MovieMapping.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T06:00:10.367Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MovieRequest.cs",
+              "DocumentMoniker": "D:\\Projekty\\Movie\\WebApplication1\\DTO\\Request\\MovieRequest.cs",
+              "RelativeDocumentMoniker": "DTO\\Request\\MovieRequest.cs",
+              "ToolTip": "D:\\Projekty\\Movie\\WebApplication1\\DTO\\Request\\MovieRequest.cs",
+              "RelativeToolTip": "DTO\\Request\\MovieRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAABfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T05:59:47.694Z",
+              "EditorCaption": ""
             }
           ]
         }

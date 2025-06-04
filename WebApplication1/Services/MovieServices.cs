@@ -1,21 +1,63 @@
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mime;
 using WebApplication1.Data;
+using WebApplication1.DTO.Mapping;
+using WebApplication1.DTO.Request;
 using WebApplication1.Models;
 namespace WebApplication1.Services.Impl
 {
     public class MovieServices : IMovieServices
     {
         private readonly AppDbContext _context;
+        /// <summary>
+        /// private readonly MovieMapping _mapper;
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="movieMapper"></param>
 
-        public MovieServices(AppDbContext context)
+        public MovieServices(AppDbContext context/*,MovieMapping movieMapper*/)
         {
+            //_mapper = movieMapper;
             _context = context;
         }
 
-        public async Task<Movie> Add(Movie movie)
+        public async Task<Movie> Add(MovieRequest movieRequest)
         {
+            var movie = new Movie
+            {
+                title = movieRequest.Title,
+                description = movieRequest.Description
+            };
+
+            var existingDirector = await _context.Directors
+                .FirstOrDefaultAsync(d =>
+                    d.name == movieRequest.Director.Name &&
+                    d.surname == movieRequest.Director.Surname);
+
+            if (existingDirector != null)
+            {
+                movie.director = existingDirector;
+            }
+            else
+            {
+                movie.director = new Director
+                {
+                    name = movieRequest.Director.Name,
+                    surname = movieRequest.Director.Surname
+                };
+            }
+
+            var existingGenre = await _context.Genres
+                .FirstOrDefaultAsync(g => g.name == movieRequest.Genre.name);
+
+            movie.genre = existingGenre ?? new Genre
+            {
+                name = movieRequest.Genre.name
+            };
+
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
+
             return movie;
         }
 
