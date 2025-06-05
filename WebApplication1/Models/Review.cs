@@ -12,5 +12,11 @@ namespace WebApplication1.Models
         public int Rating { get; set; }
         public string Comment { get; set; }
         public int MovieId { get; set; }
+        public void SetReview(Review review)
+        {
+            this.Rating = review.Rating;
+            this.Comment = review.Comment;
+            this.MovieId = review.MovieId;
+        }
     }
 }

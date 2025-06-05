@@ -3,21 +3,17 @@ using System.Net.Mime;
 using WebApplication1.Data;
 using WebApplication1.DTO.Mapping;
 using WebApplication1.DTO.Request;
+using WebApplication1.DTO.Response;
 using WebApplication1.Models;
 namespace WebApplication1.Services.Impl
 {
     public class MovieServices : IMovieServices
     {
         private readonly AppDbContext _context;
-        /// <summary>
-        /// private readonly MovieMapping _mapper;
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="movieMapper"></param>
 
-        public MovieServices(AppDbContext context/*,MovieMapping movieMapper*/)
+
+        public MovieServices(AppDbContext context)
         {
-            //_mapper = movieMapper;
             _context = context;
         }
 
@@ -73,22 +69,26 @@ namespace WebApplication1.Services.Impl
             return false;
         }
 
-        public async Task<List<Movie>> GetAllAsync()
+        public async Task<List<MovieResponse>> GetAllAsync()
         {
-            return await _context.Movies
+            var movies = await _context.Movies
                 .Include(m => m.genre)
                 .Include(m => m.director)
                 .Include(m => m.reviews)
                 .ToListAsync();
+            return movies.Select(MovieMapping.ToResponse).ToList();
         }
 
-        public async Task<Movie?> GetById(int id)
+        public async Task<MovieResponse?> GetById(int id)
         {
-            return await _context.Movies
+            var movie = await _context.Movies
                 .Include(m => m.genre)
                 .Include(m => m.director)
                 .Include(m => m.reviews)
-                .FirstOrDefaultAsync(m=>m.Id==id);
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (movie != null)
+                return null;
+            return MovieMapping.ToResponse(movie);
         }
 
         public async Task<bool> Update(Movie updatedMovie,int id)
