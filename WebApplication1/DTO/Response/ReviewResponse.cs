@@ -1,6 +1,4 @@
 ﻿namespace WebApplication1.DTO.Response
 {
-    public class ReviewResponse
-    {
-    }
+    public record ReviewResponse(int Rating, string Comment);
 }
