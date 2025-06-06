@@ -1,4 +1,6 @@
-﻿namespace WebApplication1.DTO.Request
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebApplication1.DTO.Request
 {
-    public record ReviewRequest();
+    public record ReviewRequest([Range(1,10)]int Rating, string Comment);
 }

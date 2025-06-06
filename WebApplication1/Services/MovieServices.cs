@@ -86,7 +86,7 @@ namespace WebApplication1.Services.Impl
                 .Include(m => m.director)
                 .Include(m => m.reviews)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie != null)
+            if (movie == null)
                 return null;
             return MovieMapping.ToResponse(movie);
         }

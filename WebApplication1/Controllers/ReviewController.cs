@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication1.DTO.Request;
 using WebApplication1.Models;
 using WebApplication1.Services;
 
@@ -19,6 +20,18 @@ namespace WebApplication1.Controllers
             var reviews = await services.GetAllAsync();
             return Ok(reviews);
 
+        }
+        [HttpPost]
+        public async Task<IActionResult> Add(int movieId,ReviewRequest reviewRequest)
+        {
+            var reviews = await services.Add(movieId, reviewRequest);
+            return CreatedAtAction(nameof(GetById), new {id=reviews.Id},reviews);
+
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(await services.GetById(id));
         }
     }
 }

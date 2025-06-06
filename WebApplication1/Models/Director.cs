@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Models
 {
-    public class Director()
+    public class Director
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Models
 {
-    public class Movie()
+    public class Movie
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

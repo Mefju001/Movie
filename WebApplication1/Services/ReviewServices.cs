@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using WebApplication1.DTO.Mapping;
+using WebApplication1.DTO.Request;
 using WebApplication1.DTO.Response;
 using WebApplication1.Models;
 
@@ -14,8 +15,14 @@ namespace WebApplication1.Services
         {
             _context = context;
         }
-        public async Task<Review> Add(Review review)
+        public async Task<Review> Add(int MovieId, ReviewRequest reviewRequest)
         {
+            var review = new Review 
+            {
+                Comment = reviewRequest.Comment,
+                Rating = reviewRequest.Rating,
+                MovieId = MovieId
+            };
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
             return review;
@@ -39,9 +46,11 @@ namespace WebApplication1.Services
             return reviews.Select(ReviewMapping.ToResponse).ToList();
         }
 
-        public async Task<Review?> GetById(int id)
+        public async Task<ReviewResponse?> GetById(int id)
         {
-            return await _context.Reviews.FirstOrDefaultAsync(r=>r.Id == id);
+            var review = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
+            if (review != null)return ReviewMapping.ToResponse(review);
+            return null;
         }
 
         public async Task<bool> Update(Review review, int id)
