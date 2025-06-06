@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
+using WebApplication1.Services;
 using WebApplication1.Services.Impl;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IMovieServices,MovieServices>();
+builder.Services.AddScoped<IReviewServices, ReviewServices>();
+
 
 var app = builder.Build();
 

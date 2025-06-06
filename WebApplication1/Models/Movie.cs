@@ -9,12 +9,12 @@ namespace WebApplication1.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string title { get; set; }
-        public string description { get; set; }
-        public Genre genre { get; set; }
-        public Director director { get; set; }
-        public List<Review> reviews { get; set; }
-        public void updateMovie(Movie movie)
+        public required string title { get; set; }
+        public required string description { get; set; }
+        public virtual Genre genre { get; set; }
+        public virtual Director director { get; set; }
+        public virtual List<Review> reviews { get; set; }
+        public void UpdateMovie(Movie movie)
         {
             title = movie.title;
             description = movie.description;

@@ -95,7 +95,7 @@ namespace WebApplication1.Services.Impl
         {
             var movie = await _context.Movies.FindAsync(id);
             if (movie == null) return false;
-            movie.updateMovie(updatedMovie);
+            movie.UpdateMovie(updatedMovie);
             await _context.SaveChangesAsync();
             return true;
         }

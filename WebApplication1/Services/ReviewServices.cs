@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
+using WebApplication1.DTO.Mapping;
+using WebApplication1.DTO.Response;
 using WebApplication1.Models;
 
 namespace WebApplication1.Services
@@ -31,10 +33,10 @@ namespace WebApplication1.Services
             return false;
         }
 
-        public async Task<List<Review>> GetAllAsync()
+        public async Task<List<ReviewResponse>> GetAllAsync()
         {
-            return await _context.Reviews
-                .ToListAsync();
+            var reviews = await _context.Reviews.ToListAsync();
+            return reviews.Select(ReviewMapping.ToResponse).ToList();
         }
 
         public async Task<Review?> GetById(int id)

@@ -8,7 +8,7 @@ namespace WebApplication1.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { set; get; }
-        public string name { get; set; }
-        public string surname { get; set; }
+        public required string name { get; set; }
+        public required string surname { get; set; }
     }
 }
