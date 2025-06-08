@@ -33,5 +33,20 @@ namespace WebApplication1.Controllers
         {
             return Ok(await services.GetById(id));
         }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deletedReview = await services.Delete(id);
+            if(!deletedReview)return NotFound();
+            return NoContent();
+        }
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Update(int id,Review review)
+        {
+            var updatedReview = await services.Update(review, id);
+            if(!updatedReview) return NotFound();
+            return NoContent();
+
+        }
     }
 }
