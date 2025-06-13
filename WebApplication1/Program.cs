@@ -1,11 +1,12 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
-using WebApplication1.Data;
-using WebApplication1.Services;
-using WebApplication1.Services.Impl;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WebApplication1.Data;
+using WebApplication1.Models;
+using WebApplication1.Services;
+using WebApplication1.Services.Impl;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IMovieServices,MovieServices>();
 builder.Services.AddScoped<IReviewServices, ReviewServices>();
 builder.Services.AddAuthentication("Bearer")
