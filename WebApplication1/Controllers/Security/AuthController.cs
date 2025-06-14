@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebApplication1.Data;
+using WebApplication1.DTO.Request;
 using WebApplication1.Models;
 using WebApplication1.Services;
 
@@ -24,14 +26,14 @@ namespace WebApplication1.Controllers.Security
         }
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] UserRequest loginRequest)
         {
-            if (loginRequest.Username == "admin" && loginRequest.Password == "password")
+            var token = await authService.Login(loginRequest);
+            if (token == null)
             {
-                var token = authService.GenerateJwtToken(loginRequest.Username, "Admin");
-                return Ok(new {Token = token});
+                return Unauthorized("Nieprawidłowe dane");
             }
-            return Unauthorized("Invalid credentials");
+            return Ok(new {Token =  token});
         }
         [AllowAnonymous]
         [HttpPost("AddRolesAndUsers")]
