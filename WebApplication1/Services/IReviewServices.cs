@@ -10,6 +10,6 @@ namespace WebApplication1.Services
         Task<ReviewResponse?> GetById(int id);
         Task<Review> Add(int movieId,ReviewRequest review);
         Task<bool> Delete(int id);
-        Task<bool> Update(Review review, int id);
+        Task<bool> Update(ReviewRequest reviewRequest, int id);
     }
 }

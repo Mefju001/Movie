@@ -91,11 +91,39 @@ namespace WebApplication1.Services.Impl
             return MovieMapping.ToResponse(movie);
         }
 
-        public async Task<bool> Update(Movie updatedMovie,int id)
+        public async Task<bool> Update(MovieRequest updatedMovie,int id)
         {
             var movie = await _context.Movies.FindAsync(id);
             if (movie == null) return false;
-            movie.UpdateMovie(updatedMovie);
+            var existingDirector = await _context.Directors
+                .FirstOrDefaultAsync(d =>
+                    d.name == updatedMovie.Director.Name &&
+                    d.surname == updatedMovie.Director.Surname);
+
+            if (existingDirector != null)
+            {
+                movie.director = existingDirector;
+            }
+            else
+            {
+                movie.director = new Director
+                {
+                    name = updatedMovie.Director.Name,
+                    surname = updatedMovie.Director.Surname
+                };
+            }
+
+            var existingGenre = await _context.Genres
+                .FirstOrDefaultAsync(g => g.name == updatedMovie.Genre.name);
+
+            movie.genre = existingGenre ?? new Genre
+            {
+                name = updatedMovie.Genre.name
+            };
+
+            movie.title = updatedMovie.Title;
+            movie.description = updatedMovie.Description;
+
             await _context.SaveChangesAsync();
             return true;
         }

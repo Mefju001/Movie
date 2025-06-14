@@ -35,7 +35,6 @@ namespace WebApplication1.Controllers.Security
             }
             return Ok(new {Token =  token});
         }
-        [AllowAnonymous]
         [HttpPost("AddRolesAndUsers")]
         public async Task<IActionResult> AddUserAndRole()
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1.DTO.Request;
 using WebApplication1.Models;
 using WebApplication1.Services;
@@ -21,6 +22,7 @@ namespace WebApplication1.Controllers
             return Ok(reviews);
 
         }
+        [Authorize(Roles = "Admin,User")]
         [HttpPost]
         public async Task<IActionResult> Add(int movieId,ReviewRequest reviewRequest)
         {
@@ -28,11 +30,13 @@ namespace WebApplication1.Controllers
             return CreatedAtAction(nameof(GetById), new {id=reviews.Id},reviews);
 
         }
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             return Ok(await services.GetById(id));
         }
+        [Authorize(Roles = "Admin,User")]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
@@ -40,10 +44,11 @@ namespace WebApplication1.Controllers
             if(!deletedReview)return NotFound();
             return NoContent();
         }
+        [Authorize(Roles = "Admin,User")]
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Update(int id,Review review)
+        public async Task<IActionResult> Update(int id,ReviewRequest reviewRequest)
         {
-            var updatedReview = await services.Update(review, id);
+            var updatedReview = await services.Update(reviewRequest, id);
             if(!updatedReview) return NotFound();
             return NoContent();
 

@@ -43,7 +43,7 @@ namespace WebApplication1.Services
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Role,role)
+                new Claim(ClaimTypes.Role,role.ToString())
             };
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
