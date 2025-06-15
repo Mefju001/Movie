@@ -5,8 +5,9 @@ using WebApplication1.Models;
 public interface IMovieServices
 {
     Task<List<MovieResponse>> GetAllAsync();
+    Task<List<MovieResponse>> GetMovies(string? name, string? genreId, string? directorId,int?movieid);
     Task<MovieResponse?> GetById(int id);
     Task<Movie> Add(MovieRequest movie);
     Task<bool> Delete(int id);
-    Task<bool> Update(Movie updatedMovie, int id);
+    Task<bool> Update(MovieRequest updatedMovie, int id);
 }

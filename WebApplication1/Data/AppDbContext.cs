@@ -27,9 +27,34 @@ namespace WebApplication1.Data
                 .HasOne(ur => ur.Role)
                 .WithMany(r => r.UserRoles)
                 .HasForeignKey(ur => ur.RoleId);
+
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Movie)
+                .WithMany(m => m.reviews)
+                .HasForeignKey(r => r.MovieId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Movie>()
+                .HasOne(m => m.director)
+                .WithMany()
+                .HasForeignKey("directorId");
+
+            modelBuilder.Entity<Movie>()
+                .HasOne(m => m.genre)
+                .WithMany()
+                .HasForeignKey("genreId");
+
             modelBuilder.Entity<Role>()
                 .Property(r => r.role)
                 .HasConversion<string>();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

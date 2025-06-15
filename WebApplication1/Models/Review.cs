@@ -11,11 +11,15 @@ namespace WebApplication1.Models
         public required int Rating { get; set; }
         public required string Comment { get; set; }
         public virtual int MovieId { get; set; }
+        public Movie Movie { get; set; }
+        public virtual int UserId { get; set; }
+        public User User { get; set; }
         public void SetReview(Review review)
         {
             this.Rating = review.Rating;
             this.Comment = review.Comment;
             this.MovieId = review.MovieId;
+            this.UserId = review.UserId;
         }
     }
 }

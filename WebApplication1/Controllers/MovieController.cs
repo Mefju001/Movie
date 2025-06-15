@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.DTO.Request;
+using WebApplication1.DTO.Response;
 using WebApplication1.Models;
 using WebApplication1.Services.Impl;
 
@@ -23,8 +24,17 @@ namespace WebApplication1.Controllers
             var movies = await _services.GetAllAsync();
             return Ok(movies);
         }
+
         [AllowAnonymous]
-        [HttpGet("{id}")]
+        [HttpGet("movies")]
+        public async Task<IActionResult>GetMovies([FromQuery] string?name, [FromQuery] string? genreid, [FromQuery] string? directorid, [FromQuery]int? movieId)
+        {
+            var movies = await _services.GetMovies(name,genreid,directorid,movieId);
+            return Ok(movies);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("id/{id}")]
         public async Task<IActionResult>GetById(int id)
         {
             var movie = await _services.GetById(id);

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Net.Mime;
 using WebApplication1.Data;
 using WebApplication1.DTO.Mapping;
@@ -78,7 +79,32 @@ namespace WebApplication1.Services.Impl
                 .ToListAsync();
             return movies.Select(MovieMapping.ToResponse).ToList();
         }
-
+        public async Task<List<MovieResponse>> GetMovies(string? name, string? genreName, string? directorName, int? movieId)
+        {
+            var query = _context.Movies
+                .Include(m => m.genre)
+                .Include(m => m.director)
+                .Include(m => m.reviews)
+                .AsQueryable();
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(m => m.title.Contains(name));
+            }
+            if (!string.IsNullOrEmpty(genreName))
+            {
+                query = query.Where(m=>m.genre.name.Contains(genreName));
+            }
+            if (!string.IsNullOrEmpty(directorName))
+            {
+                query = query.Where(m=>m.director.name.Contains(directorName));
+            }
+            if (movieId.HasValue)
+            {
+                query = query.Where(m=>m.Id == movieId.Value);
+            }
+            var movies = await query.ToListAsync();
+            return movies.Select(MovieMapping.ToResponse).ToList();
+        }
         public async Task<MovieResponse?> GetById(int id)
         {
             var movie = await _context.Movies

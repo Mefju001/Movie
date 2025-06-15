@@ -15,13 +15,14 @@ namespace WebApplication1.Services
         {
             _context = context;
         }
-        public async Task<Review> Add(int MovieId, ReviewRequest reviewRequest)
+        public async Task<Review> Add(int userId,int MovieId, ReviewRequest reviewRequest)
         {
             var review = new Review 
             {
                 Comment = reviewRequest.Comment,
                 Rating = reviewRequest.Rating,
-                MovieId = MovieId
+                MovieId = MovieId,
+                UserId = userId
             };
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
@@ -53,11 +54,11 @@ namespace WebApplication1.Services
             return null;
         }
 
-        public async Task<bool> Update(Review review, int id)
+        public async Task<bool> Update(ReviewRequest review, int id)
         {
             var fReview = _context.Reviews.FindAsync(id);
             if (review == null) return false;
-            review.SetReview(review);
+            //review.SetReview(review);
             await _context.SaveChangesAsync();
             return true;
 

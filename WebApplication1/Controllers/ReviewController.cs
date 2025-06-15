@@ -24,9 +24,9 @@ namespace WebApplication1.Controllers
         }
         [Authorize(Roles = "Admin,User")]
         [HttpPost]
-        public async Task<IActionResult> Add(int movieId,ReviewRequest reviewRequest)
+        public async Task<IActionResult> Add(int userId, int movieId,ReviewRequest reviewRequest)
         {
-            var reviews = await services.Add(movieId, reviewRequest);
+            var reviews = await services.Add(userId, movieId, reviewRequest);
             return CreatedAtAction(nameof(GetById), new {id=reviews.Id},reviews);
 
         }
