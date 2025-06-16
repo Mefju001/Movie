@@ -20,8 +20,8 @@ namespace WebApplication1.Data
 
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.User)
-                .WithMany(u => u.UserRoles)
-                .HasForeignKey(ur => ur.UserId);
+                .WithOne(u => u.UserRoles)
+                .HasForeignKey<UserRole>(ur => ur.UserId);
 
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.Role)

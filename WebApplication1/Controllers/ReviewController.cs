@@ -22,7 +22,7 @@ namespace WebApplication1.Controllers
             return Ok(reviews);
 
         }
-        [Authorize(Roles = "Admin,User")]
+        [AllowAnonymous/*Authorize(Roles = "Admin,User")*/]
         [HttpPost]
         public async Task<IActionResult> Add(int userId, int movieId,ReviewRequest reviewRequest)
         {

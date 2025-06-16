@@ -70,7 +70,7 @@ namespace WebApplication1.Services.Impl
             return false;
         }
 
-        public async Task<List<MovieResponse>> GetAllAsync()
+        public async Task<List<user>> GetAllAsync()
         {
             var movies = await _context.Movies
                 .Include(m => m.genre)
@@ -79,7 +79,41 @@ namespace WebApplication1.Services.Impl
                 .ToListAsync();
             return movies.Select(MovieMapping.ToResponse).ToList();
         }
-        public async Task<List<MovieResponse>> GetMovies(string? name, string? genreName, string? directorName, int? movieId)
+        public async Task<List<user>>GetSortAll(string  sort)
+        {
+            sort = sort.ToLower();
+            var query = _context.Movies
+                .Include(m => m.genre)
+                .Include(m => m.director)
+                .Include(m => m.reviews)
+                .AsQueryable();
+            if (!string.IsNullOrEmpty(sort) && sort.Equals("asc"))
+            {
+                query = query.OrderBy(m => m.title);
+            }
+            if(!string.IsNullOrEmpty(sort) && sort.Equals("desc"))
+            {
+                query = query.OrderByDescending(m => m.title);
+            }
+            var movies = await query.ToListAsync();
+            return movies.Select(MovieMapping.ToResponse).ToList();
+        }
+        public async Task<List<user>> GetMoviesByAvrRating()
+        {
+            var movies = await _context.Movies
+                .Include(m => m.genre)
+                .Include(m => m.director)
+                .Include(m => m.reviews)
+                .Select(m => new
+                {
+                    Movie = m,
+                    avarage = m.reviews.Average(r => (double?)r.Rating) ?? 0
+                })
+                .OrderByDescending(x => x.avarage)
+                .ToListAsync();
+            return movies.Select(x=>MovieMapping.ToResponse(x.Movie)).ToList();
+        }
+        public async Task<List<user>> GetMovies(string? name, string? genreName, string? directorName, int? movieId)
         {
             var query = _context.Movies
                 .Include(m => m.genre)
@@ -96,7 +130,7 @@ namespace WebApplication1.Services.Impl
             }
             if (!string.IsNullOrEmpty(directorName))
             {
-                query = query.Where(m=>m.director.name.Contains(directorName));
+                query = query.Where(m=>m.director.name.Contains(directorName)||m.director.surname.Contains(directorName));
             }
             if (movieId.HasValue)
             {
@@ -105,7 +139,7 @@ namespace WebApplication1.Services.Impl
             var movies = await query.ToListAsync();
             return movies.Select(MovieMapping.ToResponse).ToList();
         }
-        public async Task<MovieResponse?> GetById(int id)
+        public async Task<user?> GetById(int id)
         {
             var movie = await _context.Movies
                 .Include(m => m.genre)
