@@ -1,4 +1,7 @@
-﻿using WebApplication1.DTO.Request;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApplication1.Data;
+using WebApplication1.DTO.Mapping;
+using WebApplication1.DTO.Request;
 using WebApplication1.DTO.Response;
 using WebApplication1.Models;
 
@@ -6,6 +9,10 @@ namespace WebApplication1.Services
 {
     public class UserServices : IUserServices
     {
+        private AppDbContext dbContext;
+        public UserServices(AppDbContext dbContext) {
+            this.dbContext = dbContext;
+        }
         public Task<Movie> Add(MovieRequest movie)
         {
             throw new NotImplementedException();
@@ -16,12 +23,17 @@ namespace WebApplication1.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<MovieResponse>> GetAllAsync()
+        public async Task<List<UserResponse>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var users = await dbContext.Users
+                .Include(u=>u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+                .Include(u=>u.Reviews)
+                .ToListAsync();
+            return users.Select(UserMapping.ToResponse).ToList();
         }
 
-        public Task<MovieResponse?> GetById(int id)
+        public Task<User?> GetById(int id)
         {
             throw new NotImplementedException();
         }

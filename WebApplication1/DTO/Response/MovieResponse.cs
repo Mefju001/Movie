@@ -2,7 +2,7 @@
 
 namespace WebApplication1.DTO.Response
 {
-    public record MovieResponse(string Title, 
+    public record user(string Title, 
         string Description, string Genre, string DirectorName,
         string DirectorSurname, List<ReviewResponse>Reviews);
 

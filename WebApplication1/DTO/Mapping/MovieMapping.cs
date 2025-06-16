@@ -5,9 +5,9 @@ namespace WebApplication1.DTO.Mapping
 {
     public static class MovieMapping
     {
-        public static MovieResponse ToResponse(Movie movie)
+        public static user ToResponse(Movie movie)
         {
-            return new MovieResponse(
+            return new user(
                 movie.title,
                 movie.description,
                 movie.genre.name,

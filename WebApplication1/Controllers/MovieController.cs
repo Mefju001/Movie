@@ -24,7 +24,13 @@ namespace WebApplication1.Controllers
             var movies = await _services.GetAllAsync();
             return Ok(movies);
         }
-
+        [AllowAnonymous]
+        [HttpGet("sortBy/{sort}")]
+        public async Task<IActionResult> GetSortAll(string sort)
+        {
+            var movies = await _services.GetSortAll(sort);
+            return Ok(movies);
+        }
         [AllowAnonymous]
         [HttpGet("movies")]
         public async Task<IActionResult>GetMovies([FromQuery] string?name, [FromQuery] string? genreid, [FromQuery] string? directorid, [FromQuery]int? movieId)
@@ -32,7 +38,13 @@ namespace WebApplication1.Controllers
             var movies = await _services.GetMovies(name,genreid,directorid,movieId);
             return Ok(movies);
         }
-
+        [AllowAnonymous]
+        [HttpGet("byAvarage")]
+        public async Task<IActionResult> GetMoviesByAvarage()
+        {
+            var movies = await _services.GetMoviesByAvrRating();
+            return Ok(movies);
+        }
         [AllowAnonymous]
         [HttpGet("id/{id}")]
         public async Task<IActionResult>GetById(int id)

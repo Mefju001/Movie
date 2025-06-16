@@ -13,8 +13,8 @@ namespace WebApplication1.Models
         public required string name { get; set; }
         public required string surname { get; set; }
         public required string email { get; set; }
-        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
-        public List<Review> Reviews { get; set; } = new List<Review>();
+        public UserRole UserRoles { get; set; }
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
     }
 }
