@@ -10,7 +10,7 @@ namespace WebApplication1.DTO.Mapping
             return new UserResponse(
                 user.username,
                 user.password,
-                user.username,
+                user.name,
                 user.surname,
                 user.email,
                 RoleMapping.ToResponse(user.UserRoles.Role),

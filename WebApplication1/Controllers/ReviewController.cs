@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebApplication1.DTO.Request;
 using WebApplication1.Models;
-using WebApplication1.Services;
+using WebApplication1.Services.Interfaces;
 
 namespace WebApplication1.Controllers
 {
@@ -22,10 +23,26 @@ namespace WebApplication1.Controllers
             return Ok(reviews);
 
         }
-        [AllowAnonymous/*Authorize(Roles = "Admin,User")*/]
-        [HttpPost]
-        public async Task<IActionResult> Add(int userId, int movieId,ReviewRequest reviewRequest)
+        private int parse(string String)
         {
+            int id = int.Parse(String);
+            if (int.TryParse(String, out int userId))
+            {
+                return userId;
+            }
+            else
+                throw new Exception();
+        }
+        [Authorize(Roles = "Admin,User")]
+        [HttpPost]
+        public async Task<IActionResult> Add(int movieId,ReviewRequest reviewRequest)
+        {
+            var stringUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (stringUserId == null)
+            {
+                return Unauthorized();
+            }
+            int userId = parse(stringUserId);
             var reviews = await services.Add(userId, movieId, reviewRequest);
             return CreatedAtAction(nameof(GetById), new {id=reviews.Id},reviews);
 

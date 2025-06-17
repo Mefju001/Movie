@@ -23,7 +23,10 @@ namespace WebApplication1.Services
         }
         public async Task<string>Login(UserRequest userRequest)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.username == userRequest.username);
+            var user = await _context.Users
+                .Include(u=>u.UserRoles)
+                .ThenInclude(ur=>ur.Role)
+                .FirstOrDefaultAsync(u => u.username == userRequest.username);
             if (user == null)
             {
                 return null;
@@ -33,15 +36,16 @@ namespace WebApplication1.Services
             {
                 return null;
             }
-            var token = GenerateJwtToken(userRequest.username, userRequest.password);
+            var token = GenerateJwtToken(user.Id,userRequest.username, user.UserRoles.Role.role);
             return token;
         }
-        public string GenerateJwtToken(string username,string role)
+        public string GenerateJwtToken(int userId, string username,ERole role)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Role,role.ToString())
             };

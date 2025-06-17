@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using WebApplication1.Models;
-using WebApplication1.Services;
+using WebApplication1.Services.Interfaces;
 
 namespace WebApplication1.Controllers
 {

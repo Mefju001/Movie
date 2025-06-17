@@ -2,7 +2,7 @@
 using WebApplication1.DTO.Response;
 using WebApplication1.Models;
 
-namespace WebApplication1.Services
+namespace WebApplication1.Services.Interfaces
 {
     public interface IReviewServices
     {

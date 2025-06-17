@@ -2,14 +2,14 @@
 using WebApplication1.DTO.Response;
 using WebApplication1.Models;
 
-namespace WebApplication1.Services
+namespace WebApplication1.Services.Interfaces
 {
     public interface IUserServices
     {
         Task<List<UserResponse>> GetAllAsync();
         Task<User?> GetById(int id);
-        Task<Movie> Add(MovieRequest movie);
+        Task<User> Add(User movie);
         Task<bool> Delete(int id);
-        Task<bool> Update(Movie updatedMovie, int id);
+        Task<bool> Update(User updatedMovie, int id);
     }
 }
