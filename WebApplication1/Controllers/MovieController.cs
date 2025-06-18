@@ -57,7 +57,7 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> Create(MovieRequest movie)
         {
             var created = await _services.Add(movie);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            return Ok(created);//CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]

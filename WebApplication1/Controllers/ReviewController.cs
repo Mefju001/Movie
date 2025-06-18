@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebApplication1.DTO.Request;
@@ -43,8 +44,8 @@ namespace WebApplication1.Controllers
                 return Unauthorized();
             }
             int userId = parse(stringUserId);
-            var reviews = await services.Add(userId, movieId, reviewRequest);
-            return CreatedAtAction(nameof(GetById), new {id=reviews.Id},reviews);
+            var (id, response) = await services.Add(userId, movieId, reviewRequest);
+            return CreatedAtAction(nameof(GetById), new {id=id},response);
 
         }
         [Authorize(Roles = "Admin,User")]

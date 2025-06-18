@@ -7,9 +7,9 @@ namespace WebApplication1.Services.Interfaces
     public interface IUserServices
     {
         Task<List<UserResponse>> GetAllAsync();
-        Task<User?> GetById(int id);
-        Task<User> Add(User movie);
+        Task<UserResponse?> GetById(int id);
+        Task<UserResponse> Add(UserRequest userRequest);
         Task<bool> Delete(int id);
-        Task<bool> Update(User updatedMovie, int id);
+        Task<bool> Update(UserRequest updUser, int id);
     }
 }

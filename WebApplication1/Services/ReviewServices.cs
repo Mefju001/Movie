@@ -17,7 +17,7 @@ namespace WebApplication1.Services
         {
             _context = context;
         }
-        public async Task<Review> Add(int userId,int MovieId, ReviewRequest reviewRequest)
+        public async Task<(int reviewId, ReviewResponse response)> Add(int userId,int MovieId, ReviewRequest reviewRequest)
         {
 
             var review = new Review 
@@ -29,7 +29,8 @@ namespace WebApplication1.Services
             };
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
-            return review;
+            var response = ReviewMapping.ToResponse(review);
+            return (review.Id, response);
         }
 
         public async Task<bool> Delete(int id)
@@ -50,11 +51,7 @@ namespace WebApplication1.Services
                 .Include(r=>r.User)
                 .Include(r=>r.Movie)
                 .ToListAsync();
-            foreach (var r in reviews)
-            {
-                Console.WriteLine($"Id:{r.Id} MovieId:{r.MovieId} UserId:{r.UserId} Username:{r.User?.username ?? "NULL"} Comment:{r.Comment} Rating:{r.Rating}");
 
-            }
             return reviews.Select(ReviewMapping.ToResponse).ToList();
         }
 

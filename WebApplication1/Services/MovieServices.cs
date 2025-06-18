@@ -18,7 +18,7 @@ namespace WebApplication1.Services.Impl
             _context = context;
         }
 
-        public async Task<Movie> Add(MovieRequest movieRequest)
+        public async Task<MovieResponse> Add(MovieRequest movieRequest)
         {
             var movie = new Movie
             {
@@ -55,7 +55,8 @@ namespace WebApplication1.Services.Impl
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 
-            return movie;
+           // return movie;
+            throw new NotImplementedException();   
         }
 
         public async Task<bool> Delete(int id)

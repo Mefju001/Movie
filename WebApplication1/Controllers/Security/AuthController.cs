@@ -26,7 +26,7 @@ namespace WebApplication1.Controllers.Security
         }
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] UserRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
             var token = await authService.Login(loginRequest);
             if (token == null)

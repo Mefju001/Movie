@@ -14,7 +14,7 @@ namespace WebApplication1.Services
         public UserServices(AppDbContext dbContext) {
             this.dbContext = dbContext;
         }
-        public Task<User> Add(User movie)
+        public Task<UserResponse> Add(UserRequest userRequest)
         {
             throw new NotImplementedException();
         }
@@ -35,11 +35,11 @@ namespace WebApplication1.Services
             return users.Select(UserMapping.ToResponse).ToList();
         }
 
-        public Task<User?> GetById(int id)
+        public Task<UserResponse?> GetById(int id)
         {
             throw new NotImplementedException();
         }
-        public Task<bool> Update(User updatedMovie, int id)
+        public Task<bool> Update(UserRequest userRequest, int id)
         {
             throw new NotImplementedException();
         }

@@ -8,7 +8,7 @@ namespace WebApplication1.Services.Interfaces
     {
         Task<List<ReviewResponse>> GetAllAsync();
         Task<ReviewResponse?> GetById(int id);
-        Task<Review> Add(int userId, int movieId, ReviewRequest review);
+        Task<(int reviewId, ReviewResponse response)> Add(int userId, int movieId, ReviewRequest review);
         Task<bool> Delete(int id);
         Task<bool> Update(ReviewRequest reviewRequest, int id);
     }
