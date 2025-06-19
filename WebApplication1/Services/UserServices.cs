@@ -4,6 +4,7 @@ using WebApplication1.DTO.Mapping;
 using WebApplication1.DTO.Request;
 using WebApplication1.DTO.Response;
 using WebApplication1.Models;
+using WebApplication1.Services.Interfaces;
 
 namespace WebApplication1.Services
 {
@@ -13,7 +14,7 @@ namespace WebApplication1.Services
         public UserServices(AppDbContext dbContext) {
             this.dbContext = dbContext;
         }
-        public Task<Movie> Add(MovieRequest movie)
+        public Task<UserResponse> Add(UserRequest userRequest)
         {
             throw new NotImplementedException();
         }
@@ -29,16 +30,16 @@ namespace WebApplication1.Services
                 .Include(u=>u.UserRoles)
                 .ThenInclude(ur => ur.Role)
                 .Include(u=>u.Reviews)
+                .ThenInclude(r=>r.Movie)
                 .ToListAsync();
             return users.Select(UserMapping.ToResponse).ToList();
         }
 
-        public Task<User?> GetById(int id)
+        public Task<UserResponse?> GetById(int id)
         {
             throw new NotImplementedException();
         }
-
-        public Task<bool> Update(Movie updatedMovie, int id)
+        public Task<bool> Update(UserRequest userRequest, int id)
         {
             throw new NotImplementedException();
         }

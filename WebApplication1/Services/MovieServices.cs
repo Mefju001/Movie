@@ -18,7 +18,7 @@ namespace WebApplication1.Services.Impl
             _context = context;
         }
 
-        public async Task<Movie> Add(MovieRequest movieRequest)
+        public async Task<MovieResponse> Add(MovieRequest movieRequest)
         {
             var movie = new Movie
             {
@@ -55,7 +55,8 @@ namespace WebApplication1.Services.Impl
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 
-            return movie;
+           // return movie;
+            throw new NotImplementedException();   
         }
 
         public async Task<bool> Delete(int id)
@@ -70,7 +71,7 @@ namespace WebApplication1.Services.Impl
             return false;
         }
 
-        public async Task<List<user>> GetAllAsync()
+        public async Task<List<MovieResponse>> GetAllAsync()
         {
             var movies = await _context.Movies
                 .Include(m => m.genre)
@@ -79,7 +80,7 @@ namespace WebApplication1.Services.Impl
                 .ToListAsync();
             return movies.Select(MovieMapping.ToResponse).ToList();
         }
-        public async Task<List<user>>GetSortAll(string  sort)
+        public async Task<List<MovieResponse>>GetSortAll(string  sort)
         {
             sort = sort.ToLower();
             var query = _context.Movies
@@ -98,7 +99,7 @@ namespace WebApplication1.Services.Impl
             var movies = await query.ToListAsync();
             return movies.Select(MovieMapping.ToResponse).ToList();
         }
-        public async Task<List<user>> GetMoviesByAvrRating()
+        public async Task<List<MovieResponse>> GetMoviesByAvrRating()
         {
             var movies = await _context.Movies
                 .Include(m => m.genre)
@@ -113,7 +114,7 @@ namespace WebApplication1.Services.Impl
                 .ToListAsync();
             return movies.Select(x=>MovieMapping.ToResponse(x.Movie)).ToList();
         }
-        public async Task<List<user>> GetMovies(string? name, string? genreName, string? directorName, int? movieId)
+        public async Task<List<MovieResponse>> GetMovies(string? name, string? genreName, string? directorName, int? movieId)
         {
             var query = _context.Movies
                 .Include(m => m.genre)
@@ -139,7 +140,7 @@ namespace WebApplication1.Services.Impl
             var movies = await query.ToListAsync();
             return movies.Select(MovieMapping.ToResponse).ToList();
         }
-        public async Task<user?> GetById(int id)
+        public async Task<MovieResponse?> GetById(int id)
         {
             var movie = await _context.Movies
                 .Include(m => m.genre)

@@ -21,27 +21,31 @@ namespace WebApplication1.Services
             _passwordHasher = passwordHasher;
             _configuration = config;
         }
-        public async Task<string>Login(UserRequest userRequest)
+        public async Task<string?>Login(LoginRequest loginRequest)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.username == userRequest.username);
+            var user = await _context.Users
+                .Include(u=>u.UserRoles)
+                .ThenInclude(ur=>ur.Role)
+                .FirstOrDefaultAsync(u => u.username == loginRequest.Username);
             if (user == null)
             {
                 return null;
             }
-            var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.password, userRequest.password);
+            var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.password, loginRequest.Password);
             if(passwordVerification == PasswordVerificationResult.Failed)
             {
                 return null;
             }
-            var token = GenerateJwtToken(userRequest.username, userRequest.password);
+            var token = GenerateJwtToken(user.Id, loginRequest.Username, user.UserRoles.Role.role);
             return token;
         }
-        public string GenerateJwtToken(string username,string role)
+        public string GenerateJwtToken(int userId, string username,ERole role)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Role,role.ToString())
             };

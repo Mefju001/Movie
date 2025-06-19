@@ -26,7 +26,7 @@ namespace WebApplication1.Controllers.Security
         }
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] UserRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
             var token = await authService.Login(loginRequest);
             if (token == null)
@@ -38,8 +38,8 @@ namespace WebApplication1.Controllers.Security
         [HttpPost("AddRolesAndUsers")]
         public async Task<IActionResult> AddUserAndRole()
         {
-            var User = new User { username = "Mefju",password = passwordHasher.HashPassword(null,"Starwars2"),name = "Mateusz",surname = "Jureczko",email = "jureczkomateusz@wp.pl"};
-            var Role = new Role { role = ERole.Admin };
+            var User = new User { username = "Mati",password = passwordHasher.HashPassword(null,"Starwars2"),name = "Mateusz",surname = "Jureczko",email = "jureczkomateusz@wp.pl"};
+            var Role = new Role { role = ERole.User };
 
             appDbContext.Users.Add(User);
             appDbContext.Roles.Add(Role);

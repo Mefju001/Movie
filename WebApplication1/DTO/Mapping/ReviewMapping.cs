@@ -7,11 +7,11 @@ namespace WebApplication1.DTO.Mapping
     {
         public static ReviewResponse ToResponse(Review review)
         {
-            return new ReviewResponse(review.Rating, review.Comment)
-            {
-                Rating = review.Rating,
-                Comment = review.Comment
-            };
+            return new ReviewResponse(review.Movie?.title?? "Brak tytułu", 
+                review.User?.username?? "Nieznany użytkownik", 
+                review.Rating, 
+                review.Comment);
+
         }
     }
 }

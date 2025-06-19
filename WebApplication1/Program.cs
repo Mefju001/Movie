@@ -9,6 +9,7 @@ using WebApplication1.Data;
 using WebApplication1.Models;
 using WebApplication1.Services;
 using WebApplication1.Services.Impl;
+using WebApplication1.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
