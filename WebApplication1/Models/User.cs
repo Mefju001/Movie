@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebApplication1.DTO.Request;
 
 namespace WebApplication1.Models
 {
@@ -15,6 +16,11 @@ namespace WebApplication1.Models
         public required string email { get; set; }
         public UserRole UserRoles { get; set; }
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
-
+        public void setUser(UserRequest userRequest)
+        {
+            name = userRequest.name;
+            surname = userRequest.surname;
+            email = userRequest.email;
+        }
     }
 }
