@@ -26,20 +26,20 @@ namespace WebApplication1.Services
             var user = await _context.Users
                 .Include(u=>u.UserRoles)
                 .ThenInclude(ur=>ur.Role)
-                .FirstOrDefaultAsync(u => u.username == loginRequest.Username);
+                .FirstOrDefaultAsync(u => u.username == loginRequest.username);
             if (user == null)
             {
                 return null;
             }
-            var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.password, loginRequest.Password);
+            var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.password, loginRequest.password);
             if(passwordVerification == PasswordVerificationResult.Failed)
             {
                 return null;
             }
-            var token = GenerateJwtToken(user.Id, loginRequest.Username, user.UserRoles.Role.role);
+            var token = GenerateJwtToken(user.Id, loginRequest.username, user.UserRoles);
             return token;
         }
-        public string GenerateJwtToken(int userId, string username,ERole role)
+        public string GenerateJwtToken(int userId, string username,ICollection<UserRole> role)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);

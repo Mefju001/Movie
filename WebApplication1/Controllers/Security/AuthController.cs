@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using WebApplication1.DTO.Request;
 using WebApplication1.Models;
@@ -25,7 +23,7 @@ namespace WebApplication1.Controllers.Security
             this.passwordHasher = password;
         }
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("/Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
             var token = await authService.Login(loginRequest);
@@ -53,10 +51,21 @@ namespace WebApplication1.Controllers.Security
             await appDbContext.SaveChangesAsync();
             return Ok("Dane zostały dodane.");
         }
+        [HttpPost("role")]
+        public async Task<IActionResult> ChangeRole()
+        {
+            User? user = await appDbContext.Users.FirstOrDefaultAsync(u => u.username == "Mefju");
+            Role? role = appDbContext.Roles.FirstOrDefault(r => r.role.Equals(ERole.User));
+            if (user == null && role == null) { return this.NoContent(); }
+            var UserRole = new UserRole
+            {
+                UserId = user.Id,
+                RoleId = role.Id
+            };
+            appDbContext.UsersRoles.Add(UserRole);
+            await appDbContext.SaveChangesAsync();
+
+            return Ok("Dane zostały dodane.");
+        }
     }
-}
-public class LoginRequest
-{
-    public string Username { get; set; }
-    public string Password { get; set; }
 }

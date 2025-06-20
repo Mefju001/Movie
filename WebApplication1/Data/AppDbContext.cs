@@ -20,13 +20,15 @@ namespace WebApplication1.Data
 
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.User)
-                .WithOne(u => u.UserRoles)
-                .HasForeignKey<UserRole>(ur => ur.UserId);
+                .WithMany(u => u.UserRoles)
+                .HasForeignKey(ur => ur.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.Role)
                 .WithMany(r => r.UserRoles)
-                .HasForeignKey(ur => ur.RoleId);
+                .HasForeignKey(ur => ur.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.User)

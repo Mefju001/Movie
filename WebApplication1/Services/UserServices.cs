@@ -46,19 +46,23 @@ namespace WebApplication1.Services
             }
             return false;
         }
-        public async Task<bool>changedetails(int userId, UserRequest userRequest)
+        public async Task<bool>changedetails(int userId, UserDetailsRequest userDetailsRequest)
         {
-            var emailExists = await dbContext.Users.AnyAsync(u=>u.email == userRequest.email&&u.Id!=userId);
+            var emailExists = await dbContext.Users.AnyAsync(u=>u.email == userDetailsRequest.email&&u.Id!=userId);
             var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user is null || emailExists)
                 return false;
-                user.setUser(userRequest);
-                await dbContext.SaveChangesAsync();
+            user.setUser(userDetailsRequest);
+            await dbContext.SaveChangesAsync();
             return true;
         }
-        public Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user is null) return false;
+            dbContext.Users.Remove(user);
+            await dbContext.SaveChangesAsync();
+            return true;
         }
 
         public async Task<List<UserResponse>> GetAllAsync()
@@ -72,9 +76,37 @@ namespace WebApplication1.Services
             return users.Select(UserMapping.ToResponse).ToList();
         }
 
-        public Task<UserResponse?> GetById(int id)
+        public async Task<bool> Register(UserRequest userRequest)
         {
-            throw new NotImplementedException();
+            bool exists = await dbContext.Users.AnyAsync(u => u.username == userRequest.username || u.email == userRequest.email);
+            if (exists)
+                return false;
+            var user = new User
+            {
+                username = userRequest.username,
+                password = Hasher.HashPassword(null,userRequest.password),
+                name = userRequest.name,
+                surname = userRequest.surname,
+                email = userRequest.email,
+            };
+            dbContext.Users.Add(user);
+            await dbContext.SaveChangesAsync();
+            var role = await dbContext.Roles.FirstOrDefaultAsync(r=>r.role == ERole.User);
+            if (role is null) return false;
+            var UserRoles = new UserRole
+            {
+                UserId = user.Id,
+                RoleId = role.Id
+            };
+            dbContext.UsersRoles.Add(UserRoles);
+            await dbContext.SaveChangesAsync();
+            return true;
+        }
+        public async Task<UserResponse?> GetById(int id)
+        {
+            var user = await dbContext.Users.FirstOrDefaultAsync(u=>u.Id == id);
+            if (user is null) return null;
+            return UserMapping.ToResponse(user);
         }
         public Task<bool> Update(UserRequest userRequest, int id)
         {

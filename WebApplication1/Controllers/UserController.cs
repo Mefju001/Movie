@@ -33,6 +33,10 @@ namespace WebApplication1.Controllers
         {
             return Ok(await userServices.GetAllAsync());
         }
+        public async Task<IActionResult> Register() 
+        {
+            return Ok();
+        }
         [AllowAnonymous]
         [HttpPatch("ChangePassword")]
         public async Task<IActionResult>ChangePassword(string newPassword, string confirmPassword, string oldPassword)
@@ -47,7 +51,7 @@ namespace WebApplication1.Controllers
         }
         [AllowAnonymous]
         [HttpPatch("/ChangeDetails")]
-        public async Task<IActionResult>ChangeDetails(UserRequest userRequest)
+        public async Task<IActionResult> ChangeDetails(UserDetailsRequest userDetailsRequest)
         {
             var stringUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (stringUserId == null)
@@ -55,8 +59,7 @@ namespace WebApplication1.Controllers
                 return Unauthorized();
             }
             int userId = parse(stringUserId);
-            return Ok(await userServices.changedetails(userId,userRequest));
+            return Ok(await userServices.changedetails(userId, userDetailsRequest));
         }
-
     }
 }

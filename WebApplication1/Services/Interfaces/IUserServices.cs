@@ -12,6 +12,7 @@ namespace WebApplication1.Services.Interfaces
         Task<bool> Delete(int id);
         Task<bool> Update(UserRequest updUser, int id);
         Task<bool> changePassword(string newPassword,string confirmPassword,string oldPassword,int userId);
-        Task<bool> changedetails(int userId,UserRequest userRequest);
+        Task<bool> changedetails(int userId,UserDetailsRequest userDetailsRequest);
+        Task<bool> Register(UserRequest userRequest);
     }
 }

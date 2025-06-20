@@ -14,13 +14,13 @@ namespace WebApplication1.Models
         public required string name { get; set; }
         public required string surname { get; set; }
         public required string email { get; set; }
-        public UserRole UserRoles { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
-        public void setUser(UserRequest userRequest)
+        public void setUser(UserDetailsRequest userDetailsRequest)
         {
-            name = userRequest.name;
-            surname = userRequest.surname;
-            email = userRequest.email;
+            name = userDetailsRequest.name;
+            surname = userDetailsRequest.surname;
+            email = userDetailsRequest.email;
         }
     }
 }
