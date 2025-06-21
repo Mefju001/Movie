@@ -77,6 +77,7 @@ namespace WebApplication1.Services.Impl
                 .Include(m => m.genre)
                 .Include(m => m.director)
                 .Include(m => m.reviews)
+                .ThenInclude(r=>r.User)
                 .ToListAsync();
             return movies.Select(MovieMapping.ToResponse).ToList();
         }

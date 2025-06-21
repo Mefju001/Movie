@@ -33,9 +33,9 @@ namespace WebApplication1.Controllers
         }
         [AllowAnonymous]
         [HttpGet("movies")]
-        public async Task<IActionResult>GetMovies([FromQuery] string?name, [FromQuery] string? genreid, [FromQuery] string? directorid, [FromQuery]int? movieId)
+        public async Task<IActionResult>GetMovies([FromQuery] string?name, [FromQuery] string? genreName, [FromQuery] string? directorName, [FromQuery]int? movieId)
         {
-            var movies = await _services.GetMovies(name,genreid,directorid,movieId);
+            var movies = await _services.GetMovies(name, genreName, directorName, movieId);
             return Ok(movies);
         }
         [AllowAnonymous]
@@ -67,7 +67,7 @@ namespace WebApplication1.Controllers
             if (!deleted) return NotFound();
             return NoContent();
         }
-        [Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Admin")]
         [HttpPatch("{id}")]
         public async Task<IActionResult> Update(int id, MovieRequest movieRequest)
         {

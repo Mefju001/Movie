@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -26,29 +27,33 @@ namespace WebApplication1.Services
             var user = await _context.Users
                 .Include(u=>u.UserRoles)
                 .ThenInclude(ur=>ur.Role)
-                .FirstOrDefaultAsync(u => u.username == loginRequest.Username);
+                .FirstOrDefaultAsync(u => u.username == loginRequest.username);
             if (user == null)
             {
                 return null;
             }
-            var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.password, loginRequest.Password);
+            var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.password, loginRequest.password);
             if(passwordVerification == PasswordVerificationResult.Failed)
             {
                 return null;
             }
-            var token = GenerateJwtToken(user.Id, loginRequest.Username, user.UserRoles.Role.role);
+            var token = GenerateJwtToken(user.Id, loginRequest.username, user.UserRoles);
             return token;
         }
-        public string GenerateJwtToken(int userId, string username,ERole role)
+        public string GenerateJwtToken(int userId, string username,ICollection<UserRole> roles)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
-            var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
-            var claims = new[]
+
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Role,role.ToString())
+                new Claim(ClaimTypes.Name, username)
             };
+            foreach (var role in roles.Select(ur => ur.Role.role.ToString()))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],

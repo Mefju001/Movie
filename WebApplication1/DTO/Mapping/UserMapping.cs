@@ -13,8 +13,8 @@ namespace WebApplication1.DTO.Mapping
                 user.name,
                 user.surname,
                 user.email,
-                RoleMapping.ToResponse(user.UserRoles.Role),
-                user.Reviews.Select(r=>ReviewMapping.ToResponse(r)).ToList());
+                user.UserRoles.Select(ur => RoleMapping.ToResponse(ur.Role)).ToList(),
+                user.Reviews.Select(r => ReviewMapping.ToResponse(r)).ToList());
 
         }
     }
