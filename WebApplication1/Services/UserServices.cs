@@ -19,11 +19,6 @@ namespace WebApplication1.Services
             this.dbContext = dbContext;
             Hasher = passwordHasher;
         }
-        public Task<UserResponse> Add(UserRequest userRequest)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> changePassword(string newPassword, string confirmPassword, string oldPassword, int userId)
         {
             if (!string.IsNullOrEmpty(newPassword) && !string.IsNullOrEmpty(confirmPassword) && !string.IsNullOrEmpty(oldPassword))
@@ -104,13 +99,30 @@ namespace WebApplication1.Services
         }
         public async Task<UserResponse?> GetById(int id)
         {
-            var user = await dbContext.Users.FirstOrDefaultAsync(u=>u.Id == id);
+            var user = await dbContext.Users
+                .Include(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                .Include(u => u.Reviews)
+                    .ThenInclude(r => r.Movie)
+                .FirstOrDefaultAsync(u=>u.Id == id);
             if (user is null) return null;
             return UserMapping.ToResponse(user);
         }
-        public Task<bool> Update(UserRequest userRequest, int id)
+        public async Task<List<UserResponse>>GetBy(string name)
         {
-            throw new NotImplementedException();
+            var User = await dbContext.Users
+                .Include(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                .Include(u => u.Reviews)
+                    .ThenInclude(r => r.Movie)
+                .Where(u=>
+                        EF.Functions.Like(u.name,$"%{name}") ||
+                        EF.Functions.Like(u.surname,$"{name}")||
+                        u.username == name ||
+                        u.email == name)
+                .ToListAsync();
+            if (!User.Any()) return new List<UserResponse>();
+            return User.Select(UserMapping.ToResponse).ToList();
         }
     }
 }

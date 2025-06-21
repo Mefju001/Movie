@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using WebApplication1.DTO.Request;
 using WebApplication1.Models;
+using WebApplication1.Services;
 using WebApplication1.Services.Interfaces;
 
 namespace WebApplication1.Controllers
@@ -12,10 +13,12 @@ namespace WebApplication1.Controllers
     [Route("[controller]")]
     public class UserController:ControllerBase
     {
+        private readonly AuthService authService;
         private readonly IUserServices userServices;
-        public UserController(IUserServices userServices)
+        public UserController(IUserServices userServices,AuthService authService)
         {
             this.userServices = userServices;
+            this.authService = authService;
         }
         private int parse(string String)
         {
@@ -28,16 +31,41 @@ namespace WebApplication1.Controllers
                 throw new Exception();
         }
         [AllowAnonymous]
+        [HttpPost("/Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        {
+            var token = await authService.Login(loginRequest);
+            if (token == null)
+            {
+                return Unauthorized("Nieprawidłowe dane");
+            }
+            return Ok(new { Token = token });
+        }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
             return Ok(await userServices.GetAllAsync());
         }
-        public async Task<IActionResult> Register() 
+        [Authorize(Roles = "Admin")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(int id)
         {
-            return Ok();
+            return Ok(await userServices.GetById(id));
         }
         [AllowAnonymous]
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(UserRequest userRequest) 
+        {
+            return Ok(await userServices.Register(userRequest));
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("/{name}")]
+        public async Task<IActionResult> GetBy(string name)
+        {
+            return Ok(await userServices.GetBy(name));
+        }
+        [Authorize(Roles = "Admin,User")]
         [HttpPatch("ChangePassword")]
         public async Task<IActionResult>ChangePassword(string newPassword, string confirmPassword, string oldPassword)
         {
@@ -49,7 +77,7 @@ namespace WebApplication1.Controllers
             int userId = parse(stringUserId);
             return Ok(await userServices.changePassword(newPassword,confirmPassword,oldPassword,userId));
         }
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin,User")]
         [HttpPatch("/ChangeDetails")]
         public async Task<IActionResult> ChangeDetails(UserDetailsRequest userDetailsRequest)
         {

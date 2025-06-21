@@ -22,17 +22,7 @@ namespace WebApplication1.Controllers.Security
             this.appDbContext = appDbContext;
             this.passwordHasher = password;
         }
-        [AllowAnonymous]
-        [HttpPost("/Login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
-        {
-            var token = await authService.Login(loginRequest);
-            if (token == null)
-            {
-                return Unauthorized("Nieprawidłowe dane");
-            }
-            return Ok(new {Token =  token});
-        }
+
         [HttpPost("AddRolesAndUsers")]
         public async Task<IActionResult> AddUserAndRole()
         {

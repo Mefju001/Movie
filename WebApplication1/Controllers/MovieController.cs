@@ -67,7 +67,7 @@ namespace WebApplication1.Controllers
             if (!deleted) return NotFound();
             return NoContent();
         }
-        [Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Admin")]
         [HttpPatch("{id}")]
         public async Task<IActionResult> Update(int id, MovieRequest movieRequest)
         {
