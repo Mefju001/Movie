@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers
             return Ok(movies);
         }
         [AllowAnonymous]
-        [HttpGet("movies")]
+        [HttpGet("FilterBy")]
         public async Task<IActionResult>GetMovies([FromQuery] string?name, [FromQuery] string? genreName, [FromQuery] string? directorName, [FromQuery]int? movieId)
         {
             var movies = await _services.GetMovies(name, genreName, directorName, movieId);
@@ -57,7 +57,7 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> Create(MovieRequest movie)
         {
             var created = await _services.Add(movie);
-            return Ok(created);//CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            return Ok(CreatedAtAction(nameof(GetById), new { id = created.movieId }, created.response));
         }
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]

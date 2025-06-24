@@ -45,7 +45,7 @@ namespace WebApplication1.Controllers
             }
             int userId = parse(stringUserId);
             var (id, response) = await services.Add(userId, movieId, reviewRequest);
-            return CreatedAtAction(nameof(GetById), new {id=id},response);
+            return Ok(CreatedAtAction(nameof(GetById), new {id=id},response));
 
         }
         [Authorize(Roles = "Admin,User")]

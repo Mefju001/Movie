@@ -30,17 +30,6 @@ namespace WebApplication1.Controllers
             else
                 throw new Exception();
         }
-        [AllowAnonymous]
-        [HttpPost("/Login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
-        {
-            var token = await authService.Login(loginRequest);
-            if (token == null)
-            {
-                return Unauthorized("Nieprawidłowe dane");
-            }
-            return Ok(new { Token = token });
-        }
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetUsers()
@@ -52,12 +41,6 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> GetUserById(int id)
         {
             return Ok(await userServices.GetById(id));
-        }
-        [AllowAnonymous]
-        [HttpPost("Register")]
-        public async Task<IActionResult> Register(UserRequest userRequest) 
-        {
-            return Ok(await userServices.Register(userRequest));
         }
         [Authorize(Roles = "Admin")]
         [HttpGet("/{name}")]
