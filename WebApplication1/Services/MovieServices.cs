@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Net.Mime;
 using WebApplication1.Data;
 using WebApplication1.DTO.Mapping;
 using WebApplication1.DTO.Request;
@@ -8,54 +6,65 @@ using WebApplication1.DTO.Response;
 using WebApplication1.Models;
 namespace WebApplication1.Services.Impl
 {
-    public class MovieServices : IMovieServices
+    public class MovieServices(AppDbContext context) : IMovieServices
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _context = context;
 
-
-        public MovieServices(AppDbContext context)
+        private async Task<Director>GetOrCreateDirectorAsync(DirectorRequest directorRequest)
         {
-            _context = context;
+            var Director = await _context.Directors.FirstOrDefaultAsync(d => string.Equals(d.name, directorRequest.Name, StringComparison.Ordinal) && string.Equals(d.surname, directorRequest.Surname, StringComparison.Ordinal));
+            if(Director is not null) return Director;
+            Director = new Director { name = directorRequest.Name, surname = directorRequest.Surname };
+            _context.Directors.Add(Director);
+            return Director;
         }
-
-        public async Task<(int movieId, MovieResponse response)> Add(MovieRequest movieRequest)
+        private async Task<Genre>GetOrCreateGenreAsync(GenreRequest genreRequest)
         {
-            var movie = new Movie
+            var genre =  await _context.Genres.FirstOrDefaultAsync(g=>string.Equals(g.name,genreRequest.name,StringComparison.Ordinal));
+            if(genre is not null)return genre;
+            genre = new Genre { name = genreRequest.name };
+            _context.Genres.Add(genre);
+            return genre;
+        }
+        public async Task<(int movieId, MovieResponse response)> Upsert(int? movieId,MovieRequest movieRequest)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                title = movieRequest.Title,
-                description = movieRequest.Description
-            };
-
-            var existingDirector = await _context.Directors
-                .FirstOrDefaultAsync(d =>
-                    d.name == movieRequest.Director.Name &&
-                    d.surname == movieRequest.Director.Surname);
-
-            if (existingDirector != null)
-            {
-                movie.director = existingDirector;
-            }
-            else
-            {
-                movie.director = new Director
+                Movie? movie;
+                if (movieId is not null)
                 {
-                    name = movieRequest.Director.Name,
-                    surname = movieRequest.Director.Surname
+                    movie = await _context.Movies
+                            .Include(m => m.director)
+                            .Include(m => m.genre)
+                            .FirstOrDefaultAsync(m => m.Id == movieId.Value);
+                    if (movie is not null)
+                    {
+                        movie.title = movieRequest.Title;
+                        movie.description = movieRequest.Description;
+                        movie.director = await GetOrCreateDirectorAsync(movieRequest.Director);
+                        movie.genre = await GetOrCreateGenreAsync(movieRequest.Genre);
+                        await _context.SaveChangesAsync();
+                        await transaction.CommitAsync();
+                        return (movie.Id, MovieMapping.ToResponse(movie));
+                    }
+                }
+                movie = new Movie
+                {
+                    title = movieRequest.Title,
+                    description = movieRequest.Description,
+                    director = await GetOrCreateDirectorAsync(movieRequest.Director),
+                    genre = await GetOrCreateGenreAsync(movieRequest.Genre)
                 };
+                _context.Movies.Add(movie);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return (movie.Id, MovieMapping.ToResponse(movie));
             }
-
-            var existingGenre = await _context.Genres
-                .FirstOrDefaultAsync(g => g.name == movieRequest.Genre.name);
-
-            movie.genre = existingGenre ?? new Genre
-            {
-                name = movieRequest.Genre.name
-            };
-
-            _context.Movies.Add(movie);
-            await _context.SaveChangesAsync();
-            var movieResponse = MovieMapping.ToResponse(movie);
-            return (movie.Id, movieResponse);  
+            catch { 
+                await _context.Database.RollbackTransactionAsync();
+                throw;
+            }
         }
 
         public async Task<bool> Delete(int id)
@@ -151,43 +160,5 @@ namespace WebApplication1.Services.Impl
                 return null;
             return MovieMapping.ToResponse(movie);
         }
-
-        public async Task<bool> Update(MovieRequest updatedMovie,int id)
-        {
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie == null) return false;
-            var existingDirector = await _context.Directors
-                .FirstOrDefaultAsync(d =>
-                    d.name == updatedMovie.Director.Name &&
-                    d.surname == updatedMovie.Director.Surname);
-
-            if (existingDirector != null)
-            {
-                movie.director = existingDirector;
-            }
-            else
-            {
-                movie.director = new Director
-                {
-                    name = updatedMovie.Director.Name,
-                    surname = updatedMovie.Director.Surname
-                };
-            }
-
-            var existingGenre = await _context.Genres
-                .FirstOrDefaultAsync(g => g.name == updatedMovie.Genre.name);
-
-            movie.genre = existingGenre ?? new Genre
-            {
-                name = updatedMovie.Genre.name
-            };
-
-            movie.title = updatedMovie.Title;
-            movie.description = updatedMovie.Description;
-
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
     }
 }

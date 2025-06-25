@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore.Update.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

@@ -17,20 +17,43 @@ namespace WebApplication1.Services
         {
             _context = context;
         }
-        public async Task<(int reviewId, ReviewResponse response)> Add(int userId,int MovieId, ReviewRequest reviewRequest)
+        public async Task<(int reviewId, ReviewResponse response)> Upsert(int? reviewId, int userId, int movieId, ReviewRequest reviewRequest)
         {
-
-            var review = new Review 
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try 
             {
-                Comment = reviewRequest.Comment,
-                Rating = reviewRequest.Rating,
-                MovieId = MovieId,
-                UserId = userId
-            };
-            _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
-            var response = ReviewMapping.ToResponse(review);
-            return (review.Id, response);
+                Review? review;
+                if (reviewId is not null)
+                {
+                    review = await _context.Reviews
+                       .Include(r => r.Movie)
+                       .Include(r => r.User)
+                       .FirstOrDefaultAsync(r => r.Id == reviewId);
+                    if (review is not null)
+                    {
+                        review.Rating = reviewRequest.Rating;
+                        review.Comment = reviewRequest.Comment;
+                        await _context.SaveChangesAsync();
+                        await transaction.CommitAsync();
+                        return (review.Id, ReviewMapping.ToResponse(review));
+                    }
+                }
+                review = new Review
+                {
+                    Comment = reviewRequest.Comment,
+                    Rating = reviewRequest.Rating,
+                    MovieId = movieId,
+                    UserId = userId
+                };
+                _context.Reviews.Add(review);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return (review.Id, ReviewMapping.ToResponse(review));
+            }catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task<bool> Delete(int id)
@@ -62,14 +85,5 @@ namespace WebApplication1.Services
             return null;
         }
 
-        public async Task<bool> Update(ReviewRequest review, int id)
-        {
-            var fReview = _context.Reviews.FindAsync(id);
-            if (review == null) return false;
-            //review.SetReview(review);
-            await _context.SaveChangesAsync();
-            return true;
-
-        }
     }
 }
