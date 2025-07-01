@@ -52,12 +52,14 @@ namespace WebApplication1.Controllers
             var movie = await _services.GetById(id);
             return Ok(movie);
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> Create(MovieRequest movie)
+        public async Task<IActionResult> Upsert(int? id,MovieRequest movie)
         {
-            var created = await _services.Add(movie);
-            return Ok(CreatedAtAction(nameof(GetById), new { id = created.movieId }, created.response));
+            var created = await _services.Upsert(id,movie);
+            if(id is null)
+                return Ok(CreatedAtAction(nameof(GetById), new { id = created.movieId }, created.response));
+            return Ok(created.response);
         }
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
@@ -67,14 +69,6 @@ namespace WebApplication1.Controllers
             if (!deleted) return NotFound();
             return NoContent();
         }
-        [Authorize(Roles = "Admin")]
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> Update(int id, MovieRequest movieRequest)
-        {
-            var updatedMovie = await _services.Update(movieRequest, id);
-            if (!updatedMovie) return NotFound();
-            return NoContent();
 
-        }
     }
 }

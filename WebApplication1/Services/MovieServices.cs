@@ -12,7 +12,7 @@ namespace WebApplication1.Services.Impl
 
         private async Task<Director>GetOrCreateDirectorAsync(DirectorRequest directorRequest)
         {
-            var Director = await _context.Directors.FirstOrDefaultAsync(d => string.Equals(d.name, directorRequest.Name, StringComparison.Ordinal) && string.Equals(d.surname, directorRequest.Surname, StringComparison.Ordinal));
+            var Director = await _context.Directors.FirstOrDefaultAsync(d => d.name == directorRequest.Name && d.surname == directorRequest.Surname);
             if(Director is not null) return Director;
             Director = new Director { name = directorRequest.Name, surname = directorRequest.Surname };
             _context.Directors.Add(Director);
@@ -20,7 +20,7 @@ namespace WebApplication1.Services.Impl
         }
         private async Task<Genre>GetOrCreateGenreAsync(GenreRequest genreRequest)
         {
-            var genre =  await _context.Genres.FirstOrDefaultAsync(g=>string.Equals(g.name,genreRequest.name,StringComparison.Ordinal));
+            var genre =  await _context.Genres.FirstOrDefaultAsync(g=>g.name==genreRequest.name);
             if(genre is not null)return genre;
             genre = new Genre { name = genreRequest.name };
             _context.Genres.Add(genre);
@@ -28,9 +28,11 @@ namespace WebApplication1.Services.Impl
         }
         public async Task<(int movieId, MovieResponse response)> Upsert(int? movieId,MovieRequest movieRequest)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            await using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
+                var director = await GetOrCreateDirectorAsync(movieRequest.Director);
+                var genre = await GetOrCreateGenreAsync(movieRequest.Genre);
                 Movie? movie;
                 if (movieId is not null)
                 {
@@ -42,8 +44,8 @@ namespace WebApplication1.Services.Impl
                     {
                         movie.title = movieRequest.Title;
                         movie.description = movieRequest.Description;
-                        movie.director = await GetOrCreateDirectorAsync(movieRequest.Director);
-                        movie.genre = await GetOrCreateGenreAsync(movieRequest.Genre);
+                        movie.director = director;
+                        movie.genre = genre;
                         await _context.SaveChangesAsync();
                         await transaction.CommitAsync();
                         return (movie.Id, MovieMapping.ToResponse(movie));
@@ -53,16 +55,17 @@ namespace WebApplication1.Services.Impl
                 {
                     title = movieRequest.Title,
                     description = movieRequest.Description,
-                    director = await GetOrCreateDirectorAsync(movieRequest.Director),
-                    genre = await GetOrCreateGenreAsync(movieRequest.Genre)
+                    director = director,
+                    genre = genre
                 };
                 _context.Movies.Add(movie);
                 await _context.SaveChangesAsync();
+                var response = MovieMapping.ToResponse(movie);
                 await transaction.CommitAsync();
-                return (movie.Id, MovieMapping.ToResponse(movie));
+                return (movie.Id, response);
             }
-            catch { 
-                await _context.Database.RollbackTransactionAsync();
+            catch {
+                await transaction.RollbackAsync();
                 throw;
             }
         }

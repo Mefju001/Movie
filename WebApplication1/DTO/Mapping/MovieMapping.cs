@@ -13,7 +13,7 @@ namespace WebApplication1.DTO.Mapping
                 movie.genre.name,
                 movie.director.name,
                 movie.director.surname,
-                movie.reviews.Select(r => ReviewMapping.ToResponse(r)).ToList());
+                movie.reviews?.Select(r => ReviewMapping.ToResponse(r)).ToList());
         }
     }
 }
