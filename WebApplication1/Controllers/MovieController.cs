@@ -52,7 +52,7 @@ namespace WebApplication1.Controllers
             var movie = await _services.GetById(id);
             return Ok(movie);
         }
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Upsert(int? id,MovieRequest movie)
         {

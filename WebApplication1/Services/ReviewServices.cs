@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 using WebApplication1.Data;
 using WebApplication1.DTO.Mapping;
 using WebApplication1.DTO.Request;
@@ -47,8 +46,12 @@ namespace WebApplication1.Services
                 };
                 _context.Reviews.Add(review);
                 await _context.SaveChangesAsync();
+                var response = await _context.Reviews
+                    .Include(r => r.User)
+                    .Include(r => r.Movie)
+                    .FirstOrDefaultAsync(r => r.Id == review.Id);
                 await transaction.CommitAsync();
-                return (review.Id, ReviewMapping.ToResponse(review));
+                return (review.Id,ReviewMapping.ToResponse(response));
             }catch
             {
                 await transaction.RollbackAsync();
@@ -78,9 +81,12 @@ namespace WebApplication1.Services
             return reviews.Select(ReviewMapping.ToResponse).ToList();
         }
 
-        public async Task<ReviewResponse?> GetById(int id)
+        public async Task<ReviewResponse> GetById(int id)
         {
-            var review = await _context.Reviews.FirstOrDefaultAsync(r => r.Id == id);
+            var review = await _context.Reviews
+                .Include(r => r.User)
+                .Include(r => r.Movie)
+                .FirstOrDefaultAsync(r => r.Id == id);
             if (review != null)return ReviewMapping.ToResponse(review);
             return null;
         }

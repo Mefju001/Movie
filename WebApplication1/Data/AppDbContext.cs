@@ -13,8 +13,23 @@ namespace WebApplication1.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UsersRoles { get; set; }
+        public DbSet<UserMovieLike>UserMovieLike { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<UserMovieLike>()
+                .HasIndex(uml => new { uml.userId, uml.movieId })
+                .IsUnique();
+
+            modelBuilder.Entity<UserMovieLike>()
+                .HasOne(uml => uml.user)
+                .WithMany()
+                .HasForeignKey(uml => uml.userId);
+
+            modelBuilder.Entity<UserMovieLike>()
+                .HasOne(uml => uml.movie)
+                .WithMany()
+                .HasForeignKey(uml => uml.movieId);
+
             modelBuilder.Entity<UserRole>()
                 .HasKey(ur => new { ur.UserId, ur.RoleId });
 

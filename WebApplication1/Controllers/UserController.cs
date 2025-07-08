@@ -15,10 +15,12 @@ namespace WebApplication1.Controllers
     {
         private readonly AuthService authService;
         private readonly IUserServices userServices;
-        public UserController(IUserServices userServices,AuthService authService)
+        private readonly ILikedMovieServices likedMovieServices;
+        public UserController(IUserServices userServices,AuthService authService, ILikedMovieServices likedMovieServices)
         {
             this.userServices = userServices;
             this.authService = authService;
+            this.likedMovieServices = likedMovieServices;
         }
         private int parse(string String)
         {
@@ -47,6 +49,12 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> GetBy(string name)
         {
             return Ok(await userServices.GetBy(name));
+        }
+       // [Authorize(Roles = "Admin")]
+        [HttpGet("/Liked")]
+        public async Task<IActionResult> GetLikedMovies()
+        {
+            return Ok(await likedMovieServices.GetAllAsync());
         }
         [Authorize(Roles = "Admin,User")]
         [HttpPatch("ChangePassword")]
