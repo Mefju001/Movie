@@ -56,6 +56,11 @@ namespace WebApplication1.Controllers
         {
             return Ok(await likedMovieServices.GetAllAsync());
         }
+        [HttpPost("/Liked")]
+        public async Task<IActionResult> AddLikedMovie([FromBody] LikedMovieRequest likedMovie)
+        {
+            return Ok(await likedMovieServices.Add(likedMovie));
+        }
         [Authorize(Roles = "Admin,User")]
         [HttpPatch("ChangePassword")]
         public async Task<IActionResult>ChangePassword(string newPassword, string confirmPassword, string oldPassword)

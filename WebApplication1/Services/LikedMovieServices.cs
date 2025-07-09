@@ -13,9 +13,16 @@ namespace WebApplication1.Services
     {
         private readonly AppDbContext AppDbContext = context;
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            var likedMovie = await AppDbContext.UserMovieLike.FirstOrDefaultAsync(x => x.Id == id);
+            if (likedMovie != null)
+            {
+                AppDbContext.UserMovieLike.Remove(likedMovie);
+                await AppDbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
         public async Task<List<LikedMovieResponse>> GetAllAsync()
@@ -35,14 +42,41 @@ namespace WebApplication1.Services
             return likedMovies.Select(LikedMovieMapping.ToResponse).ToList();
         }
 
-        public Task<LikedMovieResponse?> GetById(int id)
+        public async Task<LikedMovieResponse?> GetById(int id)
         {
-            throw new NotImplementedException();
+            var likedMovies = await AppDbContext.UserMovieLike
+                    .Include(uml => uml.movie)
+                        .ThenInclude(m => m.genre)
+                    .Include(uml => uml.movie)
+                        .ThenInclude(m => m.director)
+                    .Include(uml => uml.movie)
+                        .ThenInclude(m => m.reviews)
+                        .ThenInclude(r => r.User)
+                    .Include(uml => uml.user)
+                        .ThenInclude(u => u.UserRoles)
+                            .ThenInclude(ur => ur.Role)
+                    .FirstOrDefaultAsync(uml=>uml.Id == id);
+            if (likedMovies == null) throw new Exception("Not found liked movie like this");
+            return LikedMovieMapping.ToResponse(likedMovies);
         }
 
-        public Task<(int movieId, LikedMovieResponse response)> Add(LikedMovieRequest movie)
+        public async Task<(int movieId, LikedMovieResponse response)> Add(LikedMovieRequest likedMovie)
         {
-            throw new NotImplementedException();
+            var existingLiked = await AppDbContext.UserMovieLike.FirstOrDefaultAsync(uml => uml.movieId==likedMovie.movieId && uml.userId == likedMovie.userId);
+            if(existingLiked is not null) throw new Exception("You liked this");
+            var user = await AppDbContext.Users.FirstOrDefaultAsync(u=>u.Id == likedMovie.userId);
+            var movie = await AppDbContext.Movies.FirstOrDefaultAsync(u => u.Id == likedMovie.movieId);
+            if(user is null|| movie is null)
+            {
+                throw new Exception("Not find user or movie");
+            }
+            UserMovieLike userMovieLike = new UserMovieLike();
+            userMovieLike.movie = movie;
+            userMovieLike.user = user;
+            AppDbContext.UserMovieLike.Add(userMovieLike);
+            var response = LikedMovieMapping.ToResponse(userMovieLike);
+            await AppDbContext.SaveChangesAsync();
+            return (movie.Id, response);
         }
     }
 }

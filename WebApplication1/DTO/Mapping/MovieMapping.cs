@@ -10,10 +10,10 @@ namespace WebApplication1.DTO.Mapping
             return new MovieResponse(
                 movie.title,
                 movie.description,
-                movie.genre.name,
-                movie.director.name,
-                movie.director.surname,
-                movie.reviews?.Select(r => ReviewMapping.ToResponse(r)).ToList());
+                movie.genre.name?? "nieznany rodzaj",
+                movie.director.name ??"Nieznany autor",
+                movie.director.surname ?? "Nieznany autor",
+                movie.reviews?.Select(r => ReviewMapping.ToResponse(r)).ToList() ?? new List<ReviewResponse>());
         }
     }
 }
