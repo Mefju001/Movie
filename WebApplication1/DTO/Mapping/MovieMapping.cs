@@ -8,12 +8,15 @@ namespace WebApplication1.DTO.Mapping
         public static MovieResponse ToResponse(Movie movie)
         {
             return new MovieResponse(
-                movie.title,
-                movie.description,
-                movie.genre.name?? "nieznany rodzaj",
-                movie.director.name ??"Nieznany autor",
-                movie.director.surname ?? "Nieznany autor",
-                movie.reviews?.Select(r => ReviewMapping.ToResponse(r)).ToList() ?? new List<ReviewResponse>());
+                movie.Title,
+                movie.Description,
+                GenreMapping.ToResponse(movie.Genre),
+                DirectorMapping.ToResponse(movie.Director),
+                movie.ReleaseDate,
+                movie.Language,
+                movie.Reviews?.Select(r => ReviewMapping.ToResponse(r)).ToList() ?? new List<ReviewResponse>(),
+                movie.Duration,
+                movie.IsCinemaRelease);
         }
     }
 }

@@ -5,7 +5,8 @@ namespace WebApplication1.Data
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
+        public DbSet<Media> Medias { get; set; }
+        public DbSet<TvSeries>TvSeries { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Director> Directors { get; set; }
@@ -17,7 +18,7 @@ namespace WebApplication1.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserMovieLike>()
-                .HasIndex(uml => new { uml.userId, uml.movieId })
+                .HasIndex(uml => new { uml.userId, uml.mediaId })
                 .IsUnique();
 
             modelBuilder.Entity<UserMovieLike>()
@@ -26,9 +27,9 @@ namespace WebApplication1.Data
                 .HasForeignKey(uml => uml.userId);
 
             modelBuilder.Entity<UserMovieLike>()
-                .HasOne(uml => uml.movie)
+                .HasOne(uml => uml.media)
                 .WithMany()
-                .HasForeignKey(uml => uml.movieId);
+                .HasForeignKey(uml => uml.mediaId);
 
             modelBuilder.Entity<UserRole>()
                 .HasKey(ur => new { ur.UserId, ur.RoleId });
@@ -52,20 +53,24 @@ namespace WebApplication1.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Review>()
-                .HasOne(r => r.Movie)
-                .WithMany(m => m.reviews)
-                .HasForeignKey(r => r.MovieId)
+                .HasOne(r => r.Media)
+                .WithMany(m => m.Reviews)
+                .HasForeignKey(r => r.MediaId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Movie>()
-                .HasOne(m => m.director)
+            modelBuilder.Entity<Media>()
+                .HasOne(m => m.Director)
                 .WithMany()
                 .HasForeignKey("directorId");
 
-            modelBuilder.Entity<Movie>()
-                .HasOne(m => m.genre)
+            modelBuilder.Entity<Media>()
+                .HasOne(m => m.Genre)
                 .WithMany()
                 .HasForeignKey("genreId");
+            modelBuilder.Entity<Media>()
+                .HasDiscriminator<string>("MediaType")
+                .HasValue<Movie>("Movie")
+                .HasValue<TvSeries>("TvSeries");
 
             modelBuilder.Entity<Role>()
                 .Property(r => r.role)

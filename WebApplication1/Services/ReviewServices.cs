@@ -25,7 +25,7 @@ namespace WebApplication1.Services
                 if (reviewId is not null)
                 {
                     review = await _context.Reviews
-                       .Include(r => r.Movie)
+                       .Include(r => r.Media)
                        .Include(r => r.User)
                        .FirstOrDefaultAsync(r => r.Id == reviewId);
                     if (review is not null)
@@ -41,14 +41,14 @@ namespace WebApplication1.Services
                 {
                     Comment = reviewRequest.Comment,
                     Rating = reviewRequest.Rating,
-                    MovieId = movieId,
+                    MediaId = movieId,
                     UserId = userId
                 };
                 _context.Reviews.Add(review);
                 await _context.SaveChangesAsync();
                 var response = await _context.Reviews
                     .Include(r => r.User)
-                    .Include(r => r.Movie)
+                    .Include(r => r.Media)
                     .FirstOrDefaultAsync(r => r.Id == review.Id);
                 await transaction.CommitAsync();
                 return (review.Id,ReviewMapping.ToResponse(response));
@@ -75,7 +75,7 @@ namespace WebApplication1.Services
         {
             var reviews = await _context.Reviews
                 .Include(r=>r.User)
-                .Include(r=>r.Movie)
+                .Include(r=>r.Media)
                 .ToListAsync();
 
             return reviews.Select(ReviewMapping.ToResponse).ToList();
@@ -85,7 +85,7 @@ namespace WebApplication1.Services
         {
             var review = await _context.Reviews
                 .Include(r => r.User)
-                .Include(r => r.Movie)
+                .Include(r => r.Media)
                 .FirstOrDefaultAsync(r => r.Id == id);
             if (review != null)return ReviewMapping.ToResponse(review);
             return null;

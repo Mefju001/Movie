@@ -28,12 +28,12 @@ namespace WebApplication1.Services
         public async Task<List<LikedMovieResponse>> GetAllAsync()
         {
             var likedMovies = await AppDbContext.UserMovieLike
-                .Include(uml => uml.movie)
-                    .ThenInclude(m => m.genre)
-                .Include(uml => uml.movie)
-                    .ThenInclude(m=>m.director)
-                .Include(uml => uml.movie)
-                    .ThenInclude(m => m.reviews)
+                .Include(uml => uml.media)
+                    .ThenInclude(m => m.Genre)
+                .Include(uml => uml.media)
+                    .ThenInclude(m=>m.Director)
+                .Include(uml => uml.media)
+                    .ThenInclude(m => m.Reviews)
                     .ThenInclude(r=>r.User)
                 .Include(uml => uml.user)
                     .ThenInclude(u=>u.UserRoles)
@@ -45,12 +45,12 @@ namespace WebApplication1.Services
         public async Task<LikedMovieResponse?> GetById(int id)
         {
             var likedMovies = await AppDbContext.UserMovieLike
-                    .Include(uml => uml.movie)
-                        .ThenInclude(m => m.genre)
-                    .Include(uml => uml.movie)
-                        .ThenInclude(m => m.director)
-                    .Include(uml => uml.movie)
-                        .ThenInclude(m => m.reviews)
+                    .Include(uml => uml.media)
+                        .ThenInclude(m => m.Genre)
+                    .Include(uml => uml.media)
+                        .ThenInclude(m => m.Director)
+                    .Include(uml => uml.media)
+                        .ThenInclude(m => m.Reviews)
                         .ThenInclude(r => r.User)
                     .Include(uml => uml.user)
                         .ThenInclude(u => u.UserRoles)
@@ -62,7 +62,7 @@ namespace WebApplication1.Services
 
         public async Task<(int movieId, LikedMovieResponse response)> Add(LikedMovieRequest likedMovie)
         {
-            var existingLiked = await AppDbContext.UserMovieLike.FirstOrDefaultAsync(uml => uml.movieId==likedMovie.movieId && uml.userId == likedMovie.userId);
+            var existingLiked = await AppDbContext.UserMovieLike.FirstOrDefaultAsync(uml => uml.mediaId==likedMovie.movieId && uml.userId == likedMovie.userId);
             if(existingLiked is not null) throw new Exception("You liked this");
             var user = await AppDbContext.Users.FirstOrDefaultAsync(u=>u.Id == likedMovie.userId);
             var movie = await AppDbContext.Movies.FirstOrDefaultAsync(u => u.Id == likedMovie.movieId);
@@ -71,12 +71,23 @@ namespace WebApplication1.Services
                 throw new Exception("Not find user or movie");
             }
             UserMovieLike userMovieLike = new UserMovieLike();
-            userMovieLike.movie = movie;
+            //userMovieLike.movie = movie;
             userMovieLike.user = user;
             AppDbContext.UserMovieLike.Add(userMovieLike);
-            var response = LikedMovieMapping.ToResponse(userMovieLike);
             await AppDbContext.SaveChangesAsync();
-            return (movie.Id, response);
+            var response = await AppDbContext.UserMovieLike
+                    .Include(uml => uml.media)
+                        .ThenInclude(m => m.Genre)
+                    .Include(uml => uml.media)
+                        .ThenInclude(m => m.Director)
+                    .Include(uml => uml.media)
+                        .ThenInclude(m => m.Reviews)
+                        .ThenInclude(r => r.User)
+                    .Include(uml => uml.user)
+                        .ThenInclude(u => u.UserRoles)
+                            .ThenInclude(ur => ur.Role)
+                    .FirstOrDefaultAsync(uml => uml.Id == userMovieLike.Id);
+            return (movie.Id, LikedMovieMapping.ToResponse(response));
         }
     }
 }

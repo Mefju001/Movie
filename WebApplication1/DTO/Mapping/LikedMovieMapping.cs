@@ -9,7 +9,7 @@ namespace WebApplication1.DTO.Mapping
         {
             return new LikedMovieResponse(
                 user: UserMapping.ToResponse(userMovieLike.user),
-                movie: MovieMapping.ToResponse(userMovieLike.movie),
+                movie: MovieMapping.ToResponse(userMovieLike.media),
                 userMovieLike.LikedDate
             );
         }
